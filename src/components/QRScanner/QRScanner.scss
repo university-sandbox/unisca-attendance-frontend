@@ -1,0 +1,44 @@
+@use '../../styles/variables' as *;
+
+.qr-scanner {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: $surface-card;
+  border: 1px solid $hairline;
+  border-radius: $border-radius-lg;
+
+  &__reader {
+    min-height: 320px;
+    color: $body;
+  }
+
+  #html5-qrcode-button-camera-permission,
+  #html5-qrcode-button-camera-start,
+  #html5-qrcode-button-camera-stop,
+  #html5-qrcode-button-file-selection {
+    min-height: 40px;
+    margin: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: $primary;
+    border: 0;
+    border-radius: $border-radius;
+    color: $on-primary;
+    font: 600 0.875rem/1 $font-base;
+  }
+
+  select {
+    max-width: calc(100% - 2rem);
+    margin: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    background: $surface-elevated;
+    border: 1px solid $hairline-strong;
+    border-radius: $border-radius;
+    color: $on-dark;
+  }
+
+  video {
+    border-radius: $border-radius;
+  }
+}
