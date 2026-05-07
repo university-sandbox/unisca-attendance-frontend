@@ -1,25 +1,26 @@
 @use 'variables' as *;
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: $font-base;
-  background: #f5f7fa;
-  color: #222;
+  background: $canvas;
+  color: $body;
+  min-width: 320px;
 }
 
 button {
   cursor: pointer;
   border: none;
   border-radius: $border-radius;
-  padding: 0.6rem 1.2rem;
-  font-size: 0.95rem;
+  min-height: 40px;
+  padding: 0.75rem 1.25rem;
+  font: 600 0.875rem/1 $font-base;
   background: $primary;
-  color: #fff;
-  transition: background 0.2s;
+  color: $on-primary;
 
-  &:hover { background: $secondary; }
+  &:active { background: $primary-active; }
   &:disabled { opacity: 0.6; cursor: not-allowed; }
 }
 
@@ -28,4 +29,12 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 2rem;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(250, 255, 105, 0.08), transparent 28rem),
+    $canvas;
+}
+
+a {
+  color: $primary;
 }

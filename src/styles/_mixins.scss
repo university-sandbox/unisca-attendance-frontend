@@ -7,16 +7,21 @@
 }
 
 @mixin card {
-  background: #fff;
-  border-radius: $border-radius;
-  box-shadow: $shadow;
-  padding: 1.5rem;
+  background: $surface-card;
+  border: 1px solid $hairline;
+  border-radius: $border-radius-lg;
+  padding: 2rem;
 }
 
 @mixin respond-to($breakpoint) {
   @if $breakpoint == 'mobile' {
-    @media (max-width: 600px) { @content; }
+    @media (max-width: 767px) { @content; }
   } @else if $breakpoint == 'tablet' {
-    @media (max-width: 960px) { @content; }
+    @media (max-width: 1024px) { @content; }
   }
+}
+
+@mixin focus-ring {
+  outline: 2px solid $primary;
+  outline-offset: 2px;
 }
