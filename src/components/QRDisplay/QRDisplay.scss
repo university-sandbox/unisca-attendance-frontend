@@ -1,0 +1,55 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.qr-display {
+  @include card;
+  @include flex-center;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+
+  &--empty {
+    min-height: 320px;
+    border-style: dashed;
+  }
+
+  &__eyebrow {
+    color: $primary;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  &__code {
+    display: grid;
+    place-items: center;
+    width: min(100%, 288px);
+    padding: 1rem;
+    background: $on-dark;
+    border-radius: $border-radius-lg;
+  }
+
+  &__label {
+    color: $on-dark;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  &__hint,
+  &__token {
+    max-width: 280px;
+    color: $muted;
+    font-family: $font-code;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+  }
+
+  &__token {
+    word-break: break-all;
+  }
+}
