@@ -33,6 +33,13 @@ button {
   background:
     radial-gradient(circle at 20% 15%, rgba(250, 255, 105, 0.08), transparent 28rem),
     $canvas;
+
+  &__status {
+    color: $primary;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
 }
 
 a {
