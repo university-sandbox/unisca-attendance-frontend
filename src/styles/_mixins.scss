@@ -1,0 +1,22 @@
+@use 'variables' as *;
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin card {
+  background: #fff;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  padding: 1.5rem;
+}
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'mobile' {
+    @media (max-width: 600px) { @content; }
+  } @else if $breakpoint == 'tablet' {
+    @media (max-width: 960px) { @content; }
+  }
+}

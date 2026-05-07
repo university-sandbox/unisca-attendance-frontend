@@ -1,0 +1,31 @@
+@use 'variables' as *;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: $font-base;
+  background: #f5f7fa;
+  color: #222;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: $border-radius;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  background: $primary;
+  color: #fff;
+  transition: background 0.2s;
+
+  &:hover { background: $secondary; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
