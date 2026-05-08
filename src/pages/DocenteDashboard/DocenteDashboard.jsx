@@ -1,16 +1,21 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
 
-import AttendanceList from '../../components/AttendanceList';
-import QRDisplay from '../../components/QRDisplay';
-import { closeSesion, createSesion, getAsistencias, getCursos } from '../../services/sesionService';
-import './DocenteDashboard.scss';
+import AttendanceList from "../../components/AttendanceList";
+import QRDisplay from "../../components/QRDisplay";
+import {
+  closeSesion,
+  createSesion,
+  getAsistencias,
+  getCursos,
+} from "../../services/sesionService";
+import "./DocenteDashboard.scss";
 
 export default function DocenteDashboard() {
   const [cursos, setCursos] = useState([]);
-  const [cursoId, setCursoId] = useState('');
+  const [cursoId, setCursoId] = useState("");
   const [sesionActiva, setSesionActiva] = useState(null);
   const [asistencias, setAsistencias] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loadingCursos, setLoadingCursos] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
@@ -21,10 +26,10 @@ export default function DocenteDashboard() {
       .then(({ data }) => {
         if (!mounted) return;
         setCursos(data);
-        setCursoId(data[0]?.id ? String(data[0].id) : '');
+        setCursoId(data[0]?.id ? String(data[0].id) : "");
       })
       .catch(() => {
-        if (mounted) setError('Error al cargar cursos.');
+        if (mounted) setError("Error al cargar cursos.");
       })
       .finally(() => {
         if (mounted) setLoadingCursos(false);
@@ -37,11 +42,11 @@ export default function DocenteDashboard() {
 
   const selectedCurso = useMemo(
     () => cursos.find((curso) => String(curso.id) === String(cursoId)),
-    [cursoId, cursos]
+    [cursoId, cursos],
   );
 
   async function handleStart() {
-    setError('');
+    setError("");
     setAsistencias([]);
     setSubmitting(true);
 
@@ -49,7 +54,7 @@ export default function DocenteDashboard() {
       const { data } = await createSesion(cursoId);
       setSesionActiva(data);
     } catch {
-      setError('Error al iniciar sesion.');
+      setError("Error al iniciar sesion.");
     } finally {
       setSubmitting(false);
     }
@@ -58,7 +63,7 @@ export default function DocenteDashboard() {
   async function handleClose() {
     if (!sesionActiva) return;
 
-    setError('');
+    setError("");
     setSubmitting(true);
 
     try {
@@ -67,7 +72,7 @@ export default function DocenteDashboard() {
       setAsistencias(data);
       setSesionActiva(null);
     } catch {
-      setError('Error al cerrar sesion.');
+      setError("Error al cerrar sesion.");
     } finally {
       setSubmitting(false);
     }
@@ -106,26 +111,32 @@ export default function DocenteDashboard() {
           </label>
 
           <div className="docente-dashboard__course">
-            <p>{selectedCurso?.codigo ?? 'Sin curso'}</p>
-            <span>{selectedCurso?.nombre ?? 'No hay cursos disponibles.'}</span>
+            <p>{selectedCurso?.codigo ?? "Sin curso"}</p>
+            <span>{selectedCurso?.nombre ?? "No hay cursos disponibles."}</span>
           </div>
 
-          <button onClick={handleStart} disabled={!cursoId || loadingCursos || submitting}>
-            {submitting ? 'Iniciando...' : 'Iniciar sesion de clase'}
+          <button
+            onClick={handleStart}
+            disabled={!cursoId || loadingCursos || submitting}
+          >
+            {submitting ? "Iniciando..." : "Iniciar sesion de clase"}
           </button>
         </section>
       ) : (
         <section className="docente-dashboard__session">
           <div className="docente-dashboard__session-copy">
             <p className="docente-dashboard__eyebrow">Proyectar en aula</p>
-            <h2>{selectedCurso?.nombre ?? 'Sesion activa'}</h2>
-            <p>El codigo queda activo hasta cerrar la sesion y consultar el listado final.</p>
+            <h2>{selectedCurso?.nombre ?? "Sesion activa"}</h2>
+            <p>
+              El codigo queda activo hasta cerrar la sesion y consultar el
+              listado final.
+            </p>
             <button
               className="docente-dashboard__close-btn"
               onClick={handleClose}
               disabled={submitting}
             >
-              {submitting ? 'Volviendo...' : 'Volver al panel'}
+              {submitting ? "Volviendo..." : "Volver al panel"}
             </button>
           </div>
           <QRDisplay token={String(sesionActiva.qr_token)} />

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -8,8 +8,8 @@ export async function login(username, password) {
     password,
   });
 
-  sessionStorage.setItem('access_token', data.access);
-  sessionStorage.setItem('refresh_token', data.refresh);
+  sessionStorage.setItem("access_token", data.access);
+  sessionStorage.setItem("refresh_token", data.refresh);
 
   return data;
 }

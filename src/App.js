@@ -1,14 +1,20 @@
-import { Navigate, Route, BrowserRouter as Router, Routes, useNavigate } from 'react-router-dom';
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 
-import { useAuth } from './context/AuthContext';
-import DocenteDashboard from './pages/DocenteDashboard';
-import EstudianteDashboard from './pages/EstudianteDashboard';
-import Login from './pages/Login';
+import { useAuth } from "./context/AuthContext";
+import DocenteDashboard from "./pages/DocenteDashboard";
+import EstudianteDashboard from "./pages/EstudianteDashboard";
+import Login from "./pages/Login";
 
 const ROLE_ROUTES = {
-  docente: '/docente',
-  estudiante: '/estudiante',
-  admin: '/admin',
+  docente: "/docente",
+  estudiante: "/estudiante",
+  admin: "/admin",
 };
 
 function LoadingScreen() {
@@ -33,7 +39,7 @@ function ProtectedRoute({ allowedRoles, children }) {
   if (loading) return <LoadingScreen />;
   if (!user) return <Navigate to="/login" replace />;
   if (!allowedRoles.includes(user.rol)) {
-    return <Navigate to={ROLE_ROUTES[user.rol] ?? '/login'} replace />;
+    return <Navigate to={ROLE_ROUTES[user.rol] ?? "/login"} replace />;
   }
 
   return <AuthenticatedLayout>{children}</AuthenticatedLayout>;
@@ -45,7 +51,7 @@ function AuthenticatedLayout({ children }) {
 
   function handleLogout() {
     signOut();
-    navigate('/login', { replace: true });
+    navigate("/login", { replace: true });
   }
 
   return (
@@ -57,7 +63,11 @@ function AuthenticatedLayout({ children }) {
         </div>
         <div className="app-navbar__actions">
           <span className="app-navbar__role">{user?.rol}</span>
-          <button className="app-navbar__logout" type="button" onClick={handleLogout}>
+          <button
+            className="app-navbar__logout"
+            type="button"
+            onClick={handleLogout}
+          >
             Cerrar sesion
           </button>
         </div>
@@ -72,7 +82,7 @@ function HomeRedirect() {
 
   if (loading) return <LoadingScreen />;
 
-  return <Navigate to={ROLE_ROUTES[user?.rol] ?? '/login'} replace />;
+  return <Navigate to={ROLE_ROUTES[user?.rol] ?? "/login"} replace />;
 }
 
 function App() {
@@ -83,7 +93,7 @@ function App() {
         <Route
           path="/docente"
           element={
-            <ProtectedRoute allowedRoles={['docente']}>
+            <ProtectedRoute allowedRoles={["docente"]}>
               <DocenteDashboard />
             </ProtectedRoute>
           }
@@ -91,7 +101,7 @@ function App() {
         <Route
           path="/estudiante"
           element={
-            <ProtectedRoute allowedRoles={['estudiante']}>
+            <ProtectedRoute allowedRoles={["estudiante"]}>
               <EstudianteDashboard />
             </ProtectedRoute>
           }
@@ -99,7 +109,7 @@ function App() {
         <Route
           path="/admin"
           element={
-            <ProtectedRoute allowedRoles={['admin']}>
+            <ProtectedRoute allowedRoles={["admin"]}>
               <AdminPlaceholder />
             </ProtectedRoute>
           }

@@ -1,11 +1,11 @@
-import './AttendanceList.scss';
+import "./AttendanceList.scss";
 
 function formatTime(timestamp) {
-  if (!timestamp) return '--:--';
+  if (!timestamp) return "--:--";
 
-  return new Intl.DateTimeFormat('es-PE', {
-    hour: '2-digit',
-    minute: '2-digit',
+  return new Intl.DateTimeFormat("es-PE", {
+    hour: "2-digit",
+    minute: "2-digit",
   }).format(new Date(timestamp));
 }
 
@@ -20,7 +20,9 @@ export default function AttendanceList({ asistencias = [] }) {
       </div>
 
       {asistencias.length === 0 ? (
-        <p className="attendance-list__empty">Aun no hay asistencias registradas.</p>
+        <p className="attendance-list__empty">
+          Aun no hay asistencias registradas.
+        </p>
       ) : (
         <div className="attendance-list__table-wrap">
           <table className="attendance-list__table">
@@ -44,11 +46,11 @@ export default function AttendanceList({ asistencias = [] }) {
                     <span
                       className={
                         asistencia.face_verified
-                          ? 'attendance-list__badge attendance-list__badge--verified'
-                          : 'attendance-list__badge'
+                          ? "attendance-list__badge attendance-list__badge--verified"
+                          : "attendance-list__badge"
                       }
                     >
-                      {asistencia.face_verified ? 'Verificado' : 'QR'}
+                      {asistencia.face_verified ? "Verificado" : "QR"}
                     </span>
                   </td>
                 </tr>

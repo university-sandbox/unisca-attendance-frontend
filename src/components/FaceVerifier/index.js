@@ -1,1 +1,1 @@
-export { default } from './FaceVerifier';
+export { default } from "./FaceVerifier";

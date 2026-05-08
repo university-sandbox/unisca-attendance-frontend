@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL;
-const REFRESH_ENDPOINT = '/auth/token/refresh/';
+const REFRESH_ENDPOINT = "/auth/token/refresh/";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -9,13 +9,13 @@ const api = axios.create({
 
 function clearSessionAndRedirect() {
   sessionStorage.clear();
-  if (window.location.pathname !== '/login') {
-    window.location.assign('/login');
+  if (window.location.pathname !== "/login") {
+    window.location.assign("/login");
   }
 }
 
 api.interceptors.request.use((config) => {
-  const token = sessionStorage.getItem('access_token');
+  const token = sessionStorage.getItem("access_token");
 
   if (token) {
     config.headers = config.headers ?? {};
@@ -35,7 +35,7 @@ api.interceptors.response.use(
     }
 
     originalRequest._retry = true;
-    const refresh = sessionStorage.getItem('refresh_token');
+    const refresh = sessionStorage.getItem("refresh_token");
 
     if (!refresh) {
       clearSessionAndRedirect();
@@ -43,8 +43,10 @@ api.interceptors.response.use(
     }
 
     try {
-      const { data } = await axios.post(`${API_URL}${REFRESH_ENDPOINT}`, { refresh });
-      sessionStorage.setItem('access_token', data.access);
+      const { data } = await axios.post(`${API_URL}${REFRESH_ENDPOINT}`, {
+        refresh,
+      });
+      sessionStorage.setItem("access_token", data.access);
       originalRequest.headers = originalRequest.headers ?? {};
       originalRequest.headers.Authorization = `Bearer ${data.access}`;
 
@@ -53,7 +55,7 @@ api.interceptors.response.use(
       clearSessionAndRedirect();
       return Promise.reject(refreshError);
     }
-  }
+  },
 );
 
 export default api;
