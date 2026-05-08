@@ -125,7 +125,7 @@ export default function DocenteDashboard() {
               onClick={handleClose}
               disabled={submitting}
             >
-              {submitting ? 'Cerrando...' : 'Cerrar sesion'}
+              {submitting ? 'Volviendo...' : 'Volver al panel'}
             </button>
           </div>
           <QRDisplay token={String(sesionActiva.qr_token)} />

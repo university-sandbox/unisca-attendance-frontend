@@ -45,3 +45,77 @@ button {
 a {
   color: $primary;
 }
+
+.app-navbar {
+  min-height: 64px;
+  padding: 0.75rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(10, 10, 10, 0.96);
+  border-bottom: 1px solid $hairline;
+  color: $on-dark;
+
+  &__brand,
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+
+  &__brand {
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  &__mark {
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    background: $primary;
+    border-radius: $border-radius-sm;
+    color: $on-primary;
+    font-family: $font-code;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  &__role {
+    color: $muted;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.4;
+    text-transform: capitalize;
+  }
+
+  &__logout {
+    min-height: 36px;
+    padding: 0.6rem 0.9rem;
+    background: $surface-elevated;
+    border: 1px solid $hairline-strong;
+    color: $body-strong;
+
+    &:active {
+      background: $surface-card;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .app-navbar {
+    padding: 0.75rem 1rem;
+
+    &__brand {
+      font-size: 0;
+    }
+
+    &__role {
+      display: none;
+    }
+  }
+}

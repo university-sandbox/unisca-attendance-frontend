@@ -1,4 +1,4 @@
-import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Navigate, Route, BrowserRouter as Router, Routes, useNavigate } from 'react-router-dom';
 
 import { useAuth } from './context/AuthContext';
 import DocenteDashboard from './pages/DocenteDashboard';
@@ -36,7 +36,35 @@ function ProtectedRoute({ allowedRoles, children }) {
     return <Navigate to={ROLE_ROUTES[user.rol] ?? '/login'} replace />;
   }
 
-  return children;
+  return <AuthenticatedLayout>{children}</AuthenticatedLayout>;
+}
+
+function AuthenticatedLayout({ children }) {
+  const navigate = useNavigate();
+  const { signOut, user } = useAuth();
+
+  function handleLogout() {
+    signOut();
+    navigate('/login', { replace: true });
+  }
+
+  return (
+    <>
+      <nav className="app-navbar" aria-label="Navegacion principal">
+        <div className="app-navbar__brand">
+          <span className="app-navbar__mark">UA</span>
+          <span>Unisca Attendance</span>
+        </div>
+        <div className="app-navbar__actions">
+          <span className="app-navbar__role">{user?.rol}</span>
+          <button className="app-navbar__logout" type="button" onClick={handleLogout}>
+            Cerrar sesion
+          </button>
+        </div>
+      </nav>
+      {children}
+    </>
+  );
 }
 
 function HomeRedirect() {
