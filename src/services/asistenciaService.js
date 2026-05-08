@@ -1,7 +1,7 @@
-import api from './api';
+import api from "./api";
 
 export const registrarAsistencia = (qrToken, faceVerified) =>
-  api.post('/asistencias/', {
+  api.post("/asistencias/", {
     qr_token: qrToken,
     face_verified: faceVerified,
   });

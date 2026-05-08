@@ -1,7 +1,7 @@
-import { useEffect, useId, useMemo, useRef } from 'react';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { useEffect, useId, useMemo, useRef } from "react";
+import { Html5QrcodeScanner } from "html5-qrcode";
 
-import './QRScanner.scss';
+import "./QRScanner.scss";
 
 const SCANNER_CONFIG = {
   fps: 10,
@@ -11,8 +11,8 @@ const SCANNER_CONFIG = {
 export default function QRScanner({ onScanSuccess }) {
   const reactId = useId();
   const readerId = useMemo(
-    () => `qr-reader-${reactId.replace(/[^a-zA-Z0-9_-]/g, '')}`,
-    [reactId]
+    () => `qr-reader-${reactId.replace(/[^a-zA-Z0-9_-]/g, "")}`,
+    [reactId],
   );
   const handledScanRef = useRef(false);
 
@@ -30,7 +30,7 @@ export default function QRScanner({ onScanSuccess }) {
           .catch(() => {})
           .finally(() => onScanSuccess(decodedText));
       },
-      () => {}
+      () => {},
     );
 
     return () => {

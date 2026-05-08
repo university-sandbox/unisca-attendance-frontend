@@ -1,7 +1,7 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-import api from '../services/api';
-import { logout } from '../services/authService';
+import api from "../services/api";
+import { logout } from "../services/authService";
 
 const AuthContext = createContext(null);
 
@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = sessionStorage.getItem('access_token');
+    const token = sessionStorage.getItem("access_token");
 
     if (!token) {
       setLoading(false);
@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
     }
 
     api
-      .get('/usuarios/me/')
+      .get("/usuarios/me/")
       .then(({ data }) => setUser(data))
       .catch(() => {
         sessionStorage.clear();
@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
       signOut,
       loading,
     }),
-    [loading, user]
+    [loading, user],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -49,7 +49,7 @@ export function useAuth() {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
 
   return context;

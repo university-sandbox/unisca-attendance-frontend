@@ -1,5 +1,5 @@
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
 
 .docente-dashboard {
   width: 100%;
@@ -147,7 +147,7 @@
   }
 }
 
-@include respond-to('tablet') {
+@include respond-to("tablet") {
   .docente-dashboard {
     &__controls,
     &__session {
@@ -160,7 +160,7 @@
   }
 }
 
-@include respond-to('mobile') {
+@include respond-to("mobile") {
   .docente-dashboard {
     padding: 2rem 1rem;
 

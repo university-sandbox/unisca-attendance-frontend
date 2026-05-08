@@ -1,37 +1,37 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { useAuth } from '../../context/AuthContext';
-import api from '../../services/api';
-import { login } from '../../services/authService';
-import './Login.scss';
+import { useAuth } from "../../context/AuthContext";
+import api from "../../services/api";
+import { login } from "../../services/authService";
+import "./Login.scss";
 
 const ROUTES_BY_ROLE = {
-  docente: '/docente',
-  estudiante: '/estudiante',
-  admin: '/admin',
+  docente: "/docente",
+  estudiante: "/estudiante",
+  admin: "/admin",
 };
 
 export default function Login() {
   const { setUser } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
       await login(username, password);
-      const { data } = await api.get('/usuarios/me/');
+      const { data } = await api.get("/usuarios/me/");
       setUser(data);
-      navigate(ROUTES_BY_ROLE[data.rol] ?? '/', { replace: true });
+      navigate(ROUTES_BY_ROLE[data.rol] ?? "/", { replace: true });
     } catch {
-      setError('Credenciales incorrectas. Verifica tu usuario y contrasena.');
+      setError("Credenciales incorrectas. Verifica tu usuario y contrasena.");
     } finally {
       setLoading(false);
     }
@@ -43,7 +43,8 @@ export default function Login() {
         <p className="login__eyebrow">Control de asistencia</p>
         <h1 className="login__title">UniSCA</h1>
         <p className="login__subtitle">
-          Registro rapido para sesiones presenciales con QR y verificacion facial.
+          Registro rapido para sesiones presenciales con QR y verificacion
+          facial.
         </p>
       </section>
 
@@ -78,7 +79,7 @@ export default function Login() {
         </label>
 
         <button type="submit" disabled={loading}>
-          {loading ? 'Ingresando...' : 'Ingresar'}
+          {loading ? "Ingresando..." : "Ingresar"}
         </button>
       </form>
     </main>

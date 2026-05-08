@@ -1,1 +1,1 @@
-export { default } from './QRDisplay';
+export { default } from "./QRDisplay";

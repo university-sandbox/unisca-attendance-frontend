@@ -1,1 +1,1 @@
-export { default } from './QRScanner';
+export { default } from "./QRScanner";

@@ -1,7 +1,13 @@
-@use 'variables' as *;
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@use "variables" as *;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   font-family: $font-base;
@@ -20,8 +26,13 @@ button {
   background: $primary;
   color: $on-primary;
 
-  &:active { background: $primary-active; }
-  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  &:active {
+    background: $primary-active;
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
 
 .app-shell {
@@ -31,7 +42,11 @@ button {
   justify-content: center;
   padding: 2rem;
   background:
-    radial-gradient(circle at 20% 15%, rgba(250, 255, 105, 0.08), transparent 28rem),
+    radial-gradient(
+      circle at 20% 15%,
+      rgba(250, 255, 105, 0.08),
+      transparent 28rem
+    ),
     $canvas;
 
   &__status {

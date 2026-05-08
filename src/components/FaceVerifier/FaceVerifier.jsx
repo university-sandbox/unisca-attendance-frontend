@@ -1,16 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
-import * as faceapi from 'face-api.js';
+import { useEffect, useRef, useState } from "react";
+import * as faceapi from "face-api.js";
 
-import './FaceVerifier.scss';
+import "./FaceVerifier.scss";
 
-const MODEL_URL = '/models';
+const MODEL_URL = "/models";
 const TIMEOUT_MS = 30000;
 const POLL_INTERVAL_MS = 800;
 const MATCH_THRESHOLD = 0.5;
 
 export default function FaceVerifier({ referenceImageUrl, onVerified }) {
   const videoRef = useRef(null);
-  const [status, setStatus] = useState('Cargando modelos de reconocimiento...');
+  const [status, setStatus] = useState("Cargando modelos de reconocimiento...");
 
   useEffect(() => {
     let stream;
@@ -34,7 +34,7 @@ export default function FaceVerifier({ referenceImageUrl, onVerified }) {
 
     async function runVerification() {
       if (!referenceImageUrl) {
-        finish(false, 'No hay foto de perfil para comparar.');
+        finish(false, "No hay foto de perfil para comparar.");
         return;
       }
 
@@ -44,7 +44,7 @@ export default function FaceVerifier({ referenceImageUrl, onVerified }) {
         faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
       ]);
 
-      setStatus('Cargando foto de referencia...');
+      setStatus("Cargando foto de referencia...");
       const referenceImage = await faceapi.fetchImage(referenceImageUrl);
       const referenceDetection = await faceapi
         .detectSingleFace(referenceImage)
@@ -52,17 +52,20 @@ export default function FaceVerifier({ referenceImageUrl, onVerified }) {
         .withFaceDescriptor();
 
       if (!referenceDetection) {
-        finish(false, 'No se encontro rostro en la foto de perfil.');
+        finish(false, "No se encontro rostro en la foto de perfil.");
         return;
       }
 
-      const labeledDescriptor = new faceapi.LabeledFaceDescriptors('perfil', [
+      const labeledDescriptor = new faceapi.LabeledFaceDescriptors("perfil", [
         referenceDetection.descriptor,
       ]);
-      const matcher = new faceapi.FaceMatcher(labeledDescriptor, MATCH_THRESHOLD);
+      const matcher = new faceapi.FaceMatcher(
+        labeledDescriptor,
+        MATCH_THRESHOLD,
+      );
 
       stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user' },
+        video: { facingMode: "user" },
         audio: false,
       });
 
@@ -70,10 +73,10 @@ export default function FaceVerifier({ referenceImageUrl, onVerified }) {
 
       videoRef.current.srcObject = stream;
       await videoRef.current.play();
-      setStatus('Mire a la camara para verificar su identidad...');
+      setStatus("Mire a la camara para verificar su identidad...");
 
       timeoutId = setTimeout(() => {
-        finish(false, 'Tiempo agotado. Continuando sin verificacion facial.');
+        finish(false, "Tiempo agotado. Continuando sin verificacion facial.");
       }, TIMEOUT_MS);
 
       intervalId = setInterval(async () => {
@@ -87,8 +90,8 @@ export default function FaceVerifier({ referenceImageUrl, onVerified }) {
         if (!detection) return;
 
         const match = matcher.findBestMatch(detection.descriptor);
-        if (match.label !== 'unknown') {
-          finish(true, 'Identidad verificada correctamente.');
+        if (match.label !== "unknown") {
+          finish(true, "Identidad verificada correctamente.");
         }
       }, POLL_INTERVAL_MS);
     }
@@ -109,7 +112,12 @@ export default function FaceVerifier({ referenceImageUrl, onVerified }) {
     <section className="face-verifier" aria-live="polite">
       <p className="face-verifier__status">{status}</p>
       <div className="face-verifier__video-shell">
-        <video ref={videoRef} className="face-verifier__video" muted playsInline />
+        <video
+          ref={videoRef}
+          className="face-verifier__video"
+          muted
+          playsInline
+        />
       </div>
     </section>
   );

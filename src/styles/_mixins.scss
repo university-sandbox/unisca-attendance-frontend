@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 @mixin flex-center {
   display: flex;
@@ -14,10 +14,14 @@
 }
 
 @mixin respond-to($breakpoint) {
-  @if $breakpoint == 'mobile' {
-    @media (max-width: 767px) { @content; }
-  } @else if $breakpoint == 'tablet' {
-    @media (max-width: 1024px) { @content; }
+  @if $breakpoint == "mobile" {
+    @media (max-width: 767px) {
+      @content;
+    }
+  } @else if $breakpoint == "tablet" {
+    @media (max-width: 1024px) {
+      @content;
+    }
   }
 }
 

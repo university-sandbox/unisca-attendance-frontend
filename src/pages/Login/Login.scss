@@ -1,5 +1,5 @@
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
 
 .login {
   min-height: 100vh;
@@ -102,7 +102,7 @@
   }
 }
 
-@include respond-to('tablet') {
+@include respond-to("tablet") {
   .login {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -110,7 +110,7 @@
   }
 }
 
-@include respond-to('mobile') {
+@include respond-to("mobile") {
   .login {
     padding: 2rem 1rem;
 
