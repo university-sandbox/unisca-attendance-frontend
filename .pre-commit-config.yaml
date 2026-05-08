@@ -1,0 +1,30 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: frontend-lint
+        name: frontend lint
+        entry: bun run lint
+        language: system
+        pass_filenames: false
+        types_or:
+          - javascript
+          - jsx
+
+      - id: frontend-format
+        name: frontend format
+        entry: bunx --bun prettier --check --ignore-unknown
+        language: system
+        types_or:
+          - javascript
+          - jsx
+          - scss
+          - html
