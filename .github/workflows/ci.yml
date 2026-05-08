@@ -47,4 +47,5 @@ jobs:
       - name: Build app
         run: bun run build
         env:
+          CI: "false"
           REACT_APP_API_URL: http://localhost:8000/api
