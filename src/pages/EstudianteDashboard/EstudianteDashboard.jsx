@@ -25,21 +25,23 @@ export default function EstudianteDashboard() {
     setStep(STEPS.FACE);
   }, []);
 
-  const handleFaceResult = useCallback(
-    async (faceVerified) => {
-      try {
-        const { data } = await registrarAsistencia(qrToken, faceVerified);
-        setMessage(`Asistencia registrada - metodo: ${data.metodo}`);
-        setStep(STEPS.DONE);
-      } catch (error) {
-        setMessage(
-          error.response?.data?.error || "Error al registrar asistencia.",
-        );
-        setStep(STEPS.ERROR);
-      }
-    },
-    [qrToken],
-  );
+  const handleFaceVerified = useCallback(async () => {
+    try {
+      const { data } = await registrarAsistencia(qrToken, true);
+      setMessage(`Asistencia registrada - metodo: ${data.metodo}`);
+      setStep(STEPS.DONE);
+    } catch (error) {
+      setMessage(
+        error.response?.data?.error || "Error al registrar asistencia.",
+      );
+      setStep(STEPS.ERROR);
+    }
+  }, [qrToken]);
+
+  const handleFaceFailure = useCallback((failureMessage) => {
+    setMessage(failureMessage || "No se pudo verificar la identidad.");
+    setStep(STEPS.ERROR);
+  }, []);
 
   function resetFlow() {
     setQrToken(null);
@@ -86,7 +88,8 @@ export default function EstudianteDashboard() {
           </p>
           <FaceVerifier
             referenceImageUrl={user?.foto_perfil}
-            onVerified={handleFaceResult}
+            onVerified={handleFaceVerified}
+            onFailure={handleFaceFailure}
           />
         </section>
       )}

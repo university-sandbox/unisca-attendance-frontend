@@ -8,7 +8,11 @@ const TIMEOUT_MS = 30000;
 const POLL_INTERVAL_MS = 800;
 const MATCH_THRESHOLD = 0.5;
 
-export default function FaceVerifier({ referenceImageUrl, onVerified }) {
+export default function FaceVerifier({
+  referenceImageUrl,
+  onVerified,
+  onFailure,
+}) {
   const videoRef = useRef(null);
   const [status, setStatus] = useState("Cargando modelos de reconocimiento...");
 
@@ -29,12 +33,21 @@ export default function FaceVerifier({ referenceImageUrl, onVerified }) {
       clearTimeout(timeoutId);
       stopCamera();
       setStatus(message);
-      onVerified(verified);
+
+      if (verified) {
+        onVerified();
+        return;
+      }
+
+      onFailure?.(message);
     };
 
     async function runVerification() {
       if (!referenceImageUrl) {
-        finish(false, "No hay foto de perfil para comparar.");
+        finish(
+          false,
+          "No hay foto de perfil para realizar la verificacion facial.",
+        );
         return;
       }
 
@@ -76,7 +89,7 @@ export default function FaceVerifier({ referenceImageUrl, onVerified }) {
       setStatus("Mire a la camara para verificar su identidad...");
 
       timeoutId = setTimeout(() => {
-        finish(false, "Tiempo agotado. Continuando sin verificacion facial.");
+        finish(false, "Tiempo agotado. No se registro la asistencia.");
       }, TIMEOUT_MS);
 
       intervalId = setInterval(async () => {
@@ -106,7 +119,7 @@ export default function FaceVerifier({ referenceImageUrl, onVerified }) {
       clearTimeout(timeoutId);
       stopCamera();
     };
-  }, [referenceImageUrl, onVerified]);
+  }, [referenceImageUrl, onFailure, onVerified]);
 
   return (
     <section className="face-verifier" aria-live="polite">
