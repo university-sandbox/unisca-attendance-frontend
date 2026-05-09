@@ -1,5 +1,6 @@
 import {
   Navigate,
+  NavLink,
   Route,
   BrowserRouter as Router,
   Routes,
@@ -10,6 +11,7 @@ import { useAuth } from "./context/AuthContext";
 import DocenteDashboard from "./pages/DocenteDashboard";
 import EstudianteDashboard from "./pages/EstudianteDashboard";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 
 const ROLE_ROUTES = {
   docente: "/docente",
@@ -62,6 +64,15 @@ function AuthenticatedLayout({ children }) {
           <span>Unisca Attendance</span>
         </div>
         <div className="app-navbar__actions">
+          <NavLink
+            className="app-navbar__link"
+            to={ROLE_ROUTES[user?.rol] ?? "/"}
+          >
+            Panel
+          </NavLink>
+          <NavLink className="app-navbar__link" to="/perfil">
+            Mi perfil
+          </NavLink>
           <span className="app-navbar__role">{user?.rol}</span>
           <button
             className="app-navbar__logout"
@@ -111,6 +122,14 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
               <AdminPlaceholder />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/perfil"
+          element={
+            <ProtectedRoute allowedRoles={["docente", "estudiante", "admin"]}>
+              <Profile />
             </ProtectedRoute>
           }
         />

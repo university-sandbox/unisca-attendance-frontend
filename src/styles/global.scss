@@ -108,6 +108,24 @@ a {
     text-transform: capitalize;
   }
 
+  &__link {
+    min-height: 36px;
+    display: grid;
+    place-items: center;
+    padding: 0.6rem 0.85rem;
+    border-radius: $border-radius;
+    color: $body-strong;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+
+    &.active {
+      background: $primary;
+      color: $on-primary;
+    }
+  }
+
   &__logout {
     min-height: 36px;
     padding: 0.6rem 0.9rem;
@@ -131,6 +149,12 @@ a {
 
     &__role {
       display: none;
+    }
+
+    &__link,
+    &__logout {
+      padding-inline: 0.7rem;
+      font-size: 0.8rem;
     }
   }
 }

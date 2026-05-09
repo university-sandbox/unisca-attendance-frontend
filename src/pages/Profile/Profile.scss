@@ -1,0 +1,236 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.profile-page {
+  width: 100%;
+  max-width: 920px;
+  min-height: calc(100vh - 64px);
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    h1 {
+      color: $on-dark;
+      font-size: clamp(2.25rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.05;
+    }
+
+    p:not(.profile-page__eyebrow) {
+      max-width: 620px;
+      color: $body;
+      line-height: 1.55;
+    }
+  }
+
+  &__eyebrow {
+    color: $primary;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  &__alert {
+    padding: 0.85rem 1rem;
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    border-radius: $border-radius;
+    color: $success;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.45;
+
+    &--error {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: $error;
+    }
+  }
+}
+
+.profile-card {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  &__identity {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__avatar,
+  .photo-form__preview {
+    width: 72px;
+    height: 72px;
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    overflow: hidden;
+    background: $surface-elevated;
+    border: 1px solid $hairline-strong;
+    border-radius: $border-radius;
+    color: $primary;
+    font-size: 1.5rem;
+    font-weight: 700;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__name {
+    color: $on-dark;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  &__meta,
+  &__hint {
+    color: $muted;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  &__section-title {
+    color: $on-dark;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  &--photo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}
+
+.profile-form,
+.photo-form {
+  display: grid;
+  gap: 1rem;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    color: $body-strong;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  input {
+    min-height: 42px;
+    padding: 0.65rem 0.85rem;
+    background: $surface-soft;
+    border: 1px solid $hairline-strong;
+    border-radius: $border-radius;
+    color: $on-dark;
+    font: 400 0.95rem/1.4 $font-base;
+    outline: none;
+
+    &:focus {
+      @include focus-ring;
+      border-color: $primary;
+    }
+
+    &:disabled {
+      color: $muted;
+      cursor: not-allowed;
+      opacity: 0.72;
+    }
+  }
+}
+
+.profile-form {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  button {
+    width: fit-content;
+  }
+}
+
+.photo-form {
+  grid-template-columns: auto minmax(220px, 1fr) auto;
+  align-items: end;
+}
+
+.profile-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.76);
+
+  &__content {
+    width: min(100%, 440px);
+    padding: 1.5rem;
+    background: $surface-card;
+    border: 1px solid $hairline-strong;
+    border-radius: $border-radius;
+    color: $body;
+    line-height: 1.55;
+  }
+
+  &__title {
+    margin-bottom: 0.5rem;
+    color: $on-dark;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  &__secondary {
+    background: $surface-elevated;
+    border: 1px solid $hairline-strong;
+    color: $body-strong;
+  }
+}
+
+@include respond-to("tablet") {
+  .profile-card--photo,
+  .photo-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@include respond-to("mobile") {
+  .profile-page {
+    padding: 2rem 1rem;
+  }
+
+  .profile-card {
+    padding: 1.25rem;
+  }
+
+  .profile-form {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-modal__actions {
+    flex-direction: column-reverse;
+  }
+}
