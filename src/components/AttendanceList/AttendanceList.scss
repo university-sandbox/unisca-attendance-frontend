@@ -8,8 +8,9 @@
 
   &__header {
     display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: end;
     margin-bottom: 1.25rem;
   }
 
@@ -39,6 +40,44 @@
     color: $muted;
     font-size: 0.95rem;
     line-height: 1.55;
+  }
+
+  &__error {
+    margin-bottom: 1rem;
+    padding: 0.8rem 0.9rem;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    border-radius: $border-radius;
+    color: $error;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  &__date {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    min-width: 180px;
+    color: $body-strong;
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    input {
+      min-height: 40px;
+      padding: 0.6rem 0.8rem;
+      background: $surface-soft;
+      border: 1px solid $hairline-strong;
+      border-radius: $border-radius;
+      color: $on-dark;
+      color-scheme: dark;
+      font: 400 0.95rem/1.4 $font-base;
+      outline: none;
+
+      &:focus {
+        @include focus-ring;
+        border-color: $primary;
+      }
+    }
   }
 
   &__table-wrap {
@@ -92,6 +131,43 @@
       background: $primary;
       border-color: $primary;
       color: $on-primary;
+    }
+  }
+
+  &__pagination {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    align-items: center;
+    margin-top: 1rem;
+    color: $muted;
+    font-size: 0.85rem;
+
+    span {
+      font-variant-numeric: tabular-nums;
+    }
+
+    button {
+      min-height: 36px;
+      padding: 0.5rem 0.85rem;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+@include respond-to("mobile") {
+  .attendance-list {
+    &__header {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    &__date {
+      min-width: 0;
+    }
+
+    &__pagination {
+      justify-content: space-between;
     }
   }
 }
