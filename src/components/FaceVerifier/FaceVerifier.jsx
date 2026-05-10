@@ -1,12 +1,39 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 
+import { getFaceVerificationErrorMessage } from "../../utils/errors";
 import "./FaceVerifier.scss";
 
 const MODEL_URL = "/models";
 const TIMEOUT_MS = 30000;
 const POLL_INTERVAL_MS = 800;
 const MATCH_THRESHOLD = 0.5;
+
+async function ensureModelAssetsAvailable() {
+  const response = await fetch(
+    `${MODEL_URL}/ssd_mobilenetv1_model-weights_manifest.json`,
+  );
+
+  if (!response.ok) {
+    throw new Error(`Missing face-api model assets at ${MODEL_URL}`);
+  }
+}
+
+async function getCameraStream() {
+  try {
+    return await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "user" },
+      audio: false,
+    });
+  } catch (error) {
+    if (!error?.name?.includes("Overconstrained")) throw error;
+
+    return navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: false,
+    });
+  }
+}
 
 export default function FaceVerifier({
   referenceImageUrl,
@@ -51,6 +78,8 @@ export default function FaceVerifier({
         return;
       }
 
+      await ensureModelAssetsAvailable();
+
       await Promise.all([
         faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
         faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
@@ -77,10 +106,7 @@ export default function FaceVerifier({
         MATCH_THRESHOLD,
       );
 
-      stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" },
-        audio: false,
-      });
+      stream = await getCameraStream();
 
       if (!videoRef.current) return;
 
@@ -110,7 +136,7 @@ export default function FaceVerifier({
     }
 
     runVerification().catch((error) => {
-      finish(false, `Error: ${error.message}`);
+      finish(false, getFaceVerificationErrorMessage(error));
     });
 
     return () => {
