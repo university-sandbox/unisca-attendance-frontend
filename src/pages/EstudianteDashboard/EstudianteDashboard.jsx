@@ -4,6 +4,8 @@ import FaceVerifier from "../../components/FaceVerifier";
 import QRScanner from "../../components/QRScanner";
 import { useAuth } from "../../context/AuthContext";
 import { registrarAsistencia } from "../../services/asistenciaService";
+import { getApiErrorMessage } from "../../utils/errors";
+import { extractQrToken } from "../../utils/qrToken";
 import "./EstudianteDashboard.scss";
 
 const STEPS = {
@@ -19,7 +21,18 @@ export default function EstudianteDashboard() {
   const [qrToken, setQrToken] = useState(null);
   const [message, setMessage] = useState("");
 
-  const handleQRScan = useCallback((token) => {
+  const handleQRScan = useCallback((decodedText) => {
+    const token = extractQrToken(decodedText);
+
+    if (!token) {
+      setQrToken(null);
+      setMessage(
+        "Codigo QR invalido. Escanea el codigo generado por la sesion activa.",
+      );
+      setStep(STEPS.ERROR);
+      return;
+    }
+
     setQrToken(token);
     setMessage("");
     setStep(STEPS.FACE);
@@ -31,9 +44,7 @@ export default function EstudianteDashboard() {
       setMessage(`Asistencia registrada - metodo: ${data.metodo}`);
       setStep(STEPS.DONE);
     } catch (error) {
-      setMessage(
-        error.response?.data?.error || "Error al registrar asistencia.",
-      );
+      setMessage(getApiErrorMessage(error, "Error al registrar asistencia."));
       setStep(STEPS.ERROR);
     }
   }, [qrToken]);
