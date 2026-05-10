@@ -17,3 +17,15 @@ export const closeSesion = (id) =>
 
 export const getAsistencias = (sesionId) =>
   api.get(`/sesiones/${sesionId}/asistencias/`);
+
+export const getCursoAsistencias = (
+  cursoId,
+  { fecha, page = 1, pageSize = 10 },
+) =>
+  api.get(`/cursos/${cursoId}/asistencias/`, {
+    params: {
+      fecha,
+      page,
+      page_size: pageSize,
+    },
+  });

@@ -1,11 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import AttendanceList from "../../components/AttendanceList";
 import QRDisplay from "../../components/QRDisplay";
 import {
   closeSesion,
   createSesion,
-  getAsistencias,
   getCursos,
 } from "../../services/sesionService";
 import "./DocenteDashboard.scss";
@@ -14,7 +13,8 @@ export default function DocenteDashboard() {
   const [cursos, setCursos] = useState([]);
   const [cursoId, setCursoId] = useState("");
   const [sesionActiva, setSesionActiva] = useState(null);
-  const [asistencias, setAsistencias] = useState([]);
+  const [asistenciaTotal, setAsistenciaTotal] = useState(0);
+  const [attendanceRefreshKey, setAttendanceRefreshKey] = useState(0);
   const [error, setError] = useState("");
   const [loadingCursos, setLoadingCursos] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -45,9 +45,13 @@ export default function DocenteDashboard() {
     [cursoId, cursos],
   );
 
+  const handleTotalChange = useCallback((total) => {
+    setAsistenciaTotal(total);
+  }, []);
+
   async function handleStart() {
     setError("");
-    setAsistencias([]);
+    setAsistenciaTotal(0);
     setSubmitting(true);
 
     try {
@@ -68,9 +72,8 @@ export default function DocenteDashboard() {
 
     try {
       await closeSesion(sesionActiva.id);
-      const { data } = await getAsistencias(sesionActiva.id);
-      setAsistencias(data);
       setSesionActiva(null);
+      setAttendanceRefreshKey((currentKey) => currentKey + 1);
     } catch {
       setError("Error al cerrar sesion.");
     } finally {
@@ -86,7 +89,7 @@ export default function DocenteDashboard() {
           <h1>Sesion de clase</h1>
         </div>
         <div className="docente-dashboard__stat">
-          <span>{asistencias.length}</span>
+          <span>{asistenciaTotal}</span>
           asistencias
         </div>
       </header>
@@ -143,7 +146,14 @@ export default function DocenteDashboard() {
         </section>
       )}
 
-      {asistencias.length > 0 && <AttendanceList asistencias={asistencias} />}
+      {!sesionActiva && cursoId && (
+        <AttendanceList
+          key={cursoId}
+          cursoId={cursoId}
+          refreshKey={attendanceRefreshKey}
+          onTotalChange={handleTotalChange}
+        />
+      )}
     </main>
   );
 }
