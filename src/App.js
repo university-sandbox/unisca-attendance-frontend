@@ -65,12 +65,23 @@ function AuthenticatedLayout({ children }) {
         </div>
         <div className="app-navbar__actions">
           <NavLink
-            className="app-navbar__link"
+            className={({ isActive }) =>
+              isActive
+                ? "app-navbar__link active"
+                : "app-navbar__link"
+            }
             to={ROLE_ROUTES[user?.rol] ?? "/"}
           >
             Panel
           </NavLink>
-          <NavLink className="app-navbar__link" to="/perfil">
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "app-navbar__link active"
+                : "app-navbar__link"
+            }
+            to="/perfil"
+          >
             Mi perfil
           </NavLink>
           <span className="app-navbar__role">{user?.rol}</span>
