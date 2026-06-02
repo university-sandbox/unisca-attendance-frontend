@@ -66,9 +66,7 @@ function AuthenticatedLayout({ children }) {
         <div className="app-navbar__actions">
           <NavLink
             className={({ isActive }) =>
-              isActive
-                ? "app-navbar__link active"
-                : "app-navbar__link"
+              isActive ? "app-navbar__link active" : "app-navbar__link"
             }
             to={ROLE_ROUTES[user?.rol] ?? "/"}
           >
@@ -76,9 +74,7 @@ function AuthenticatedLayout({ children }) {
           </NavLink>
           <NavLink
             className={({ isActive }) =>
-              isActive
-                ? "app-navbar__link active"
-                : "app-navbar__link"
+              isActive ? "app-navbar__link active" : "app-navbar__link"
             }
             to="/perfil"
           >
