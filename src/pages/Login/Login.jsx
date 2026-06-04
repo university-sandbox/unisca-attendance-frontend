@@ -31,6 +31,7 @@ export default function Login() {
       setUser(data);
       navigate(ROUTES_BY_ROLE[data.rol] ?? "/", { replace: true });
     } catch {
+      setPassword("");
       setError("Credenciales incorrectas. Verifica tu usuario y contrasena.");
     } finally {
       setLoading(false);
@@ -64,6 +65,7 @@ export default function Login() {
             onChange={(event) => setUsername(event.target.value)}
             required
             autoComplete="username"
+            autoFocus
           />
         </label>
 
