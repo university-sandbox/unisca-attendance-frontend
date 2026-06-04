@@ -44,7 +44,7 @@ button {
   background:
     radial-gradient(
       circle at 20% 15%,
-      rgba(250, 255, 105, 0.08),
+      rgba(0, 51, 160, 0.08),
       transparent 28rem
     ),
     $canvas;
@@ -68,9 +68,9 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  background: rgba(10, 10, 10, 0.96);
-  border-bottom: 1px solid $hairline;
-  color: $on-dark;
+  background: $primary;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  color: $on-primary;
 
   &__brand,
   &__actions {
@@ -114,14 +114,14 @@ a {
     place-items: center;
     padding: 0.6rem 0.85rem;
     border-radius: $border-radius;
-    color: $body-strong;
+    color: $on-primary;
     font-size: 0.85rem;
     font-weight: 600;
     line-height: 1;
     text-decoration: none;
 
     &.active {
-      background: $primary;
+      background: rgba(255, 255, 255, 0.18);
       color: $on-primary;
     }
   }
@@ -129,12 +129,12 @@ a {
   &__logout {
     min-height: 36px;
     padding: 0.6rem 0.9rem;
-    background: $surface-elevated;
-    border: 1px solid $hairline-strong;
-    color: $body-strong;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    color: $on-primary;
 
     &:active {
-      background: $surface-card;
+      background: rgba(255, 255, 255, 0.24);
     }
   }
 }

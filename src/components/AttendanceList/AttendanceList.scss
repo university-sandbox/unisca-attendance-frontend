@@ -134,6 +134,38 @@
     }
   }
 
+  &__state {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__state-dot {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  &__state-dot--present {
+    background: $success;
+  }
+
+  &__state-dot--late {
+    background: #f7d17c;
+  }
+
+  &__state-dot--absent {
+    background: $error;
+  }
+
+  &__state-label {
+    color: $muted;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
   &__pagination {
     display: flex;
     justify-content: flex-end;

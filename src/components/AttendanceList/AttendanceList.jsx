@@ -14,6 +14,20 @@ function formatTime(timestamp) {
   }).format(new Date(timestamp));
 }
 
+function getAttendanceState(metodo) {
+  const normalized = String(metodo ?? "").toLowerCase();
+
+  if (normalized.includes("tard")) {
+    return { variant: "late", label: "Tardanza" };
+  }
+
+  if (normalized.includes("falt") || normalized.includes("absen")) {
+    return { variant: "absent", label: "Falta" };
+  }
+
+  return { variant: "present", label: "Presente" };
+}
+
 function getTodayInputValue() {
   const today = new Date();
   const offset = today.getTimezoneOffset();
@@ -114,31 +128,46 @@ export default function AttendanceList({
                 <tr>
                   <th>Codigo</th>
                   <th>Nombre</th>
+                  <th>Estado</th>
                   <th>Hora</th>
                   <th>Metodo</th>
                   <th>Facial</th>
                 </tr>
               </thead>
               <tbody>
-                {asistencias.map((asistencia) => (
-                  <tr key={asistencia.id}>
-                    <td>{asistencia.estudiante_codigo}</td>
-                    <td>{asistencia.estudiante_nombre}</td>
-                    <td>{formatTime(asistencia.timestamp_registro)}</td>
-                    <td>{asistencia.metodo}</td>
-                    <td>
-                      <span
-                        className={
-                          asistencia.face_verified
-                            ? "attendance-list__badge attendance-list__badge--verified"
-                            : "attendance-list__badge"
-                        }
-                      >
-                        {asistencia.face_verified ? "Verificado" : "QR"}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
+                {asistencias.map((asistencia) => {
+                  const attendanceState = getAttendanceState(asistencia.metodo);
+
+                  return (
+                    <tr key={asistencia.id}>
+                      <td>{asistencia.estudiante_codigo}</td>
+                      <td>{asistencia.estudiante_nombre}</td>
+                      <td className="attendance-list__state">
+                        <span
+                          className={`attendance-list__state-dot attendance-list__state-dot--${attendanceState.variant}`}
+                          title={attendanceState.label}
+                          aria-label={attendanceState.label}
+                        />
+                        <span className="attendance-list__state-label">
+                          {attendanceState.label}
+                        </span>
+                      </td>
+                      <td>{formatTime(asistencia.timestamp_registro)}</td>
+                      <td>{asistencia.metodo}</td>
+                      <td>
+                        <span
+                          className={
+                            asistencia.face_verified
+                              ? "attendance-list__badge attendance-list__badge--verified"
+                              : "attendance-list__badge"
+                          }
+                        >
+                          {asistencia.face_verified ? "Verificado" : "QR"}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
