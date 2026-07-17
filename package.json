@@ -19,12 +19,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "craco start",
+    "build": "craco build",
     "lint": "eslint src --ext .js,.jsx --max-warnings=0",
     "format:check": "prettier --check \"src/**/*.{js,jsx,scss}\" \"public/**/*.html\"",
     "format:write": "prettier --write \"src/**/*.{js,jsx,scss}\" \"public/**/*.html\"",
-    "test": "react-scripts test",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -46,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
     "prettier": "3.8.3"
   }
 }
