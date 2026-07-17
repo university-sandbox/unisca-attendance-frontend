@@ -19,3 +19,13 @@ test("maps opaque browser face image errors to actionable copy", () => {
     "No se pudo leer la foto de perfil. Actualiza la foto con una imagen valida e intenta nuevamente.",
   );
 });
+
+test("explains when the model URL returns the application HTML", () => {
+  const error = new Error(
+    "Invalid face-api model manifest at /models: expected JSON, received text/html",
+  );
+
+  expect(getFaceVerificationErrorMessage(error)).toBe(
+    "Los modelos de reconocimiento facial no se sirvieron correctamente. Vuelve a desplegar el frontend e intenta nuevamente.",
+  );
+});

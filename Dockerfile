@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 COPY . .
-RUN bun run build
+RUN bun ./scripts/download-face-models.mjs && bun run build
 
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html

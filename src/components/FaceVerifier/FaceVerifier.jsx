@@ -30,8 +30,11 @@ async function ensureModelAssetsAvailable() {
     `${MODEL_URL}/ssd_mobilenetv1_model-weights_manifest.json`,
   );
 
-  if (!response.ok) {
-    throw new Error(`Missing face-api model assets at ${MODEL_URL}`);
+  const contentType = response.headers.get("content-type") || "unknown";
+  if (!response.ok || !contentType.includes("application/json")) {
+    throw new Error(
+      `Invalid face-api model manifest at ${MODEL_URL}: expected JSON, received ${contentType}`,
+    );
   }
 }
 

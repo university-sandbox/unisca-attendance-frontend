@@ -54,3 +54,15 @@ docker compose up --build
 ```
 
 This starts the React dev server on `http://localhost:3000`.
+
+## Facial-recognition models
+
+The production image downloads the face-api.js 0.22.2 model weights during its
+build, then copies them to `/models`. This prevents Nginx's SPA fallback from
+returning `index.html` in place of a model manifest.
+
+For a local production-style build, download them before starting the app:
+
+```bash
+npm run download:face-models
+```

@@ -13,6 +13,10 @@ export function getApiErrorMessage(error, fallback = "Error inesperado.") {
 export function getFaceVerificationErrorMessage(error) {
   const message = error?.message || String(error || "");
 
+  if (message.includes("Invalid face-api model manifest")) {
+    return "Los modelos de reconocimiento facial no se sirvieron correctamente. Vuelve a desplegar el frontend e intenta nuevamente.";
+  }
+
   if (message.includes("model") || message.includes("/models")) {
     return "No se encontraron los modelos de reconocimiento facial. Verifica que existan en frontend/public/models.";
   }

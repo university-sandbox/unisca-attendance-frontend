@@ -21,6 +21,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
+    "download:face-models": "node scripts/download-face-models.mjs",
     "lint": "eslint src --ext .js,.jsx --max-warnings=0",
     "format:check": "prettier --check \"src/**/*.{js,jsx,scss}\" \"public/**/*.html\"",
     "format:write": "prettier --write \"src/**/*.{js,jsx,scss}\" \"public/**/*.html\"",
