@@ -3,6 +3,28 @@ const sourceMapExclusions = [
   /node_modules[\\/]html5-qrcode[\\/]/,
 ];
 
+function useModernSassApi(rules) {
+  for (const rule of rules) {
+    if (rule.oneOf) useModernSassApi(rule.oneOf);
+
+    const loaders = Array.isArray(rule.use)
+      ? rule.use
+      : rule.use
+        ? [rule.use]
+        : [];
+
+    for (const loader of loaders) {
+      if (
+        typeof loader === "object" &&
+        typeof loader.loader === "string" &&
+        loader.loader.includes("sass-loader")
+      ) {
+        loader.options = { ...loader.options, api: "modern" };
+      }
+    }
+  }
+}
+
 module.exports = {
   webpack: {
     configure: (webpackConfig) => {
@@ -25,6 +47,8 @@ module.exports = {
           ...sourceMapExclusions,
         ].filter(Boolean);
       }
+
+      useModernSassApi(webpackConfig.module.rules);
 
       return webpackConfig;
     },
