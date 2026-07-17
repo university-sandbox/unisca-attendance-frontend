@@ -79,7 +79,7 @@ export default function EstudianteDashboard() {
             step === STEPS.DONE || step === STEPS.ERROR ? "is-active" : ""
           }
         >
-          DONE
+          {step === STEPS.ERROR ? "ERROR" : "DONE"}
         </span>
       </div>
 
