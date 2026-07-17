@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 
+import { reportFaceVerificationDiagnostic } from "../../services/asistenciaService";
 import { getFaceVerificationErrorMessage } from "../../utils/errors";
 import "./FaceVerifier.scss";
 
@@ -8,6 +9,21 @@ const MODEL_URL = "/models";
 const TIMEOUT_MS = 30000;
 const POLL_INTERVAL_MS = 800;
 const MATCH_THRESHOLD = 0.5;
+
+function getErrorDetails(error) {
+  return {
+    error_name: String(error?.name || "Error").slice(0, 128),
+    error_message: String(error?.message || error || "").slice(0, 500),
+  };
+}
+
+function getOrigin(url) {
+  try {
+    return new URL(url).origin;
+  } catch {
+    return "";
+  }
+}
 
 async function ensureModelAssetsAvailable() {
   const response = await fetch(
@@ -48,18 +64,27 @@ export default function FaceVerifier({
     let intervalId;
     let timeoutId;
     let completed = false;
+    let stage = "initializing";
+
+    const reportDiagnostic = (event, details = {}) => {
+      void reportFaceVerificationDiagnostic(event, { stage, ...details });
+    };
 
     const stopCamera = () => {
       stream?.getTracks().forEach((track) => track.stop());
     };
 
-    const finish = (verified, message) => {
+    const finish = (verified, message, details = {}) => {
       if (completed) return;
       completed = true;
       clearInterval(intervalId);
       clearTimeout(timeoutId);
       stopCamera();
       setStatus(message);
+      reportDiagnostic(
+        verified ? "verification_succeeded" : "verification_failed",
+        verified ? {} : { error_message: message, ...details },
+      );
 
       if (verified) {
         onVerified();
@@ -70,6 +95,11 @@ export default function FaceVerifier({
     };
 
     async function runVerification() {
+      reportDiagnostic("verification_started", {
+        client_origin: window.location.origin,
+        reference_image_origin: getOrigin(referenceImageUrl),
+      });
+
       if (!referenceImageUrl) {
         finish(
           false,
@@ -78,6 +108,7 @@ export default function FaceVerifier({
         return;
       }
 
+      stage = "loading_models";
       await ensureModelAssetsAvailable();
 
       await Promise.all([
@@ -85,9 +116,12 @@ export default function FaceVerifier({
         faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
         faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
       ]);
+      reportDiagnostic("models_loaded");
 
       setStatus("Cargando foto de referencia...");
+      stage = "loading_reference_image";
       const referenceImage = await faceapi.fetchImage(referenceImageUrl);
+      reportDiagnostic("reference_image_loaded");
       const referenceDetection = await faceapi
         .detectSingleFace(referenceImage)
         .withFaceLandmarks()
@@ -106,12 +140,15 @@ export default function FaceVerifier({
         MATCH_THRESHOLD,
       );
 
+      stage = "requesting_camera";
       stream = await getCameraStream();
 
       if (!videoRef.current) return;
 
       videoRef.current.srcObject = stream;
       await videoRef.current.play();
+      reportDiagnostic("camera_started");
+      stage = "matching_face";
       setStatus("Mire a la camara para verificar su identidad...");
 
       timeoutId = setTimeout(() => {
@@ -136,7 +173,11 @@ export default function FaceVerifier({
     }
 
     runVerification().catch((error) => {
-      finish(false, getFaceVerificationErrorMessage(error));
+      finish(
+        false,
+        getFaceVerificationErrorMessage(error),
+        getErrorDetails(error),
+      );
     });
 
     return () => {
